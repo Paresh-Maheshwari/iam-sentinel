@@ -55,12 +55,8 @@ git clone https://github.com/Paresh-Maheshwari/iam-sentinel.git
 cd iam-sentinel
 ```
 
-2. **Install Dependencies**
-```bash
-pip install -r requirements.txt
-```
 
-3. **Run Interactive Setup Script**
+2. **Run Interactive Setup Script**
 ```bash
 # Using local terminal
 python3 setup.py
