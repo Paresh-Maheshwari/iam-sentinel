@@ -73,16 +73,10 @@ EVENT_SEVERITY = {
     # Group Events
     "CreateGroup": "MEDIUM",
     "DeleteGroup": "MEDIUM",
-    "AttachGroupPolicy": "HIGH",
-    
-    # Account Actions
-    "UpdateAccountPasswordPolicy": "HIGH",
-    "DeleteAccountPasswordPolicy": "CRITICAL"
+    "AttachGroupPolicy": "HIGH"
 }
 
 # In format_iam_alert() function:
-
-
 def format_iam_alert(event):
     """Formats IAM event data into a readable alert message with event descriptions."""
     user_identity = event.get("userIdentity", {})
@@ -334,11 +328,14 @@ def lambda_handler(event, context):
         # Format the alert message
         message = format_iam_alert(event_detail)
         
+        account_id = event.get("recipientAccountId", "N/A")
+        event_name = event_detail.get("eventName", "Unknown Event")
+    
         # Publish the formatted message to SNS
         sns.publish(
             TopicArn=SNS_TOPIC_ARN,
             Message=message,
-            Subject="IAM Alert: " + event_detail.get("eventName", "Unknown Event")
+            Subject = f"🚨 IAM Alert: {event_name} 🚨 | Account ID: {account_id}"
         )
         
         print("Alert sent successfully!")
